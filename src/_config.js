@@ -21,6 +21,7 @@ function useRollup(file, _, dest) {
 
 export const copies = [
   ['inject.js', 'content.js', useRollup],
+  ['command-bar.js', , useRollup],
   ['background.js'],
 ];
 

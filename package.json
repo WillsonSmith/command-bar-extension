@@ -16,6 +16,7 @@
     "rollup": "^2.56.3"
   },
   "dependencies": {
-    "command-bar": "github:WillsonSmith/command-bar"
+    "command-bar": "github:WillsonSmith/command-bar",
+    "lit": "^2.0.0-rc.4"
   }
 }
