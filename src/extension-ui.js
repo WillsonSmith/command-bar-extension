@@ -35,6 +35,8 @@ export class ExtensionUi extends LitElement {
 
         justify-content: center;
         padding: 0 8%;
+
+        z-index: 99999;
       }
 
       command-bar {

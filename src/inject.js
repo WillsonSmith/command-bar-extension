@@ -7,8 +7,9 @@ script.type = 'module';
 script.textContent = `
 import '${commandBarSource}';
 import '${extensionUiSource}';
+setTimeout(() => {
 const el = document.createElement('extension-ui');
 document.body.appendChild(el);
-console.log(el);`;
+console.log(el);}, 1000);`;
 
 document.body.appendChild(script);
