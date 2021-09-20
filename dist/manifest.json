@@ -22,7 +22,7 @@
       ],
       "persistent": false
   },
-  "web_accessible_resources": ["scripts/command-bar.js"],
+  "web_accessible_resources": ["scripts/command-bar.js", "scripts/extension-ui.js"],
   "browser_action": {
       "default_icon": {
           "16": "assets/img/16x16.png",
