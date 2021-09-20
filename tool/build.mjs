@@ -7,26 +7,28 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const debouncedEvent = debounce((eventType, filename) => {
-  import('../src/_config.js').then(({ dist = '../dist', copies }) => {
-    chdir(`${__dirname}/../src`);
-    for (const copy of copies) {
-      const [src, dest = src, transpiler] = copy;
+const debouncedEvent = (firstBuild) => (
+  debounce((eventType, filename) => {
+    import('../src/_config.js').then(({ dist = '../dist', copies }) => {
+      chdir(`${__dirname}/../src`);
+      for (const copy of copies) {
+        const [src, dest = src, transpiler] = copy;
+        if (firstBuild || filename === src) {
+          if (transpiler) {
+            readFile(src, (err, data) => {
+              transpiler(src, data.toString('utf8'), `${dist}/${dest}`);
+            });
+          }
 
-      if (filename === src) {
-        if (transpiler) {
-          readFile(src, (err, data) => {
-            transpiler(src, data.toString('utf8'), `${dist}/${dest}`);
+          copyFile(src, `${dist}/${dest}`, (error) => {
+            if (error) throw error;
           });
         }
-
-        copyFile(src, `${dist}/${dest}`, (error) => {
-          if (error) throw error;
-        });
       }
-    }
-  });
-}, 20);
+    });
+  })(),
+  20
+);
 
-debouncedEvent();
+debouncedEvent(true);
 watch('./src', debouncedEvent);
