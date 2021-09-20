@@ -2181,7 +2181,6 @@ class CommandBar extends n {
       includeMatches: true,
       includeScore: true,
     });
-
     // need to removeEventListener on unmount
     this.addEventListener('keydown', this._handleKeyDown);
   }
@@ -2207,7 +2206,6 @@ class CommandBar extends n {
             class="Search"
             placeholder="Search actions..."
             @input=${this._updateSearch}
-            ?autofocus=${this.autofocus}
           />
           <div class="Results ${this.width < 600 ? 'narrow' : ''}">
             <dl class="DescriptionList">
@@ -2277,6 +2275,12 @@ class CommandBar extends n {
       results.push({ ...result.item, action, url: urlObject, label, queries });
     }
     this.results = results;
+  }
+
+  _autofocusChanged() {
+    if (!this.autofocus) return;
+    const input = this.shadowRoot.querySelector('.Search');
+    input.focus();
   }
 
   _optionsChanged() {

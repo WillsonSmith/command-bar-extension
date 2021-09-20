@@ -28,13 +28,17 @@ export class ExtensionUi extends LitElement {
         pointer-events: none;
         display: flex;
         position: absolute;
-        top: 0;
+        top: 16%;
         right: 0;
         bottom: 0;
         left: 0;
 
         justify-content: center;
-        align-items: center;
+        padding: 0 8%;
+      }
+
+      command-bar {
+        flex: 1;
       }
     `;
   }
@@ -71,7 +75,7 @@ export class ExtensionUi extends LitElement {
 
   render() {
     if (!this.active) return;
-    return html` <command-bar .options=${options}></command-bar> `;
+    return html` <command-bar autofocus .options=${options}></command-bar> `;
   }
 }
 
