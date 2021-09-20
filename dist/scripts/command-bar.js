@@ -2040,11 +2040,6 @@ Fuse.config = Config;
   register(ExtendedSearch);
 }
 
-/**
- * params: [{name: 'q', autoFill: () => window.location}]
- * if (typeof param === 'object') query = param.autoFill();
- */
-
 const DEFAULT_OPTIONS = [
   {
     name: 'Google',
@@ -2058,7 +2053,18 @@ function constructedUrl(url, params, queries) {
   const urlObject = new URL(`${url}`);
   // case where only one, want to join all queries instead of just one
   if (params.length === 1) {
-    urlObject.searchParams.set(params[0], queries.join(' '));
+    /**
+     * Make autofill less gross to read
+     * Only supports autoFill for one param rn
+     * Should maybe have autoFill on option instead of param, so that it can be used for multiple params
+     */
+    const param = params[0];
+    if (param.autoFill) {
+      const query = param.autoFill();
+      urlObject.searchParams.set(param.name, query);
+    } else {
+      urlObject.searchParams.set(params[0], queries.join(' '));
+    }
   }
   if (params.length > 1) {
     params.forEach((param, index) => {
@@ -2157,6 +2163,7 @@ class CommandBar extends n {
 
   static get properties() {
     return {
+      autofocus: { type: Boolean },
       search: { type: String },
       selected: { type: Number }, // index of selected result
       options: { attribute: false, type: Array },
@@ -2180,7 +2187,9 @@ class CommandBar extends n {
   }
 
   updated(changedProps) {
-    for (const [prop] of changedProps) this[`_${prop}Changed`]?.bind(this)();
+    for (const [prop] of changedProps) {
+      this[`_${prop}Changed`]?.bind(this)();
+    }
   }
 
   disconnectedCallback() {
@@ -2198,6 +2207,7 @@ class CommandBar extends n {
             class="Search"
             placeholder="Search actions..."
             @input=${this._updateSearch}
+            ?autofocus=${this.autofocus}
           />
           <div class="Results ${this.width < 600 ? 'narrow' : ''}">
             <dl class="DescriptionList">
@@ -2211,7 +2221,9 @@ class CommandBar extends n {
                   data-focused=${index === this.selected}
                   class="Result"
                   aria-label="${result.label}"
-                  @focus=${() => (this.selected = index)}
+                  @focus=${() => {
+                    this.selected = index;
+                  }}
                 >
                   <dt class="Result__action">${result.name}</dt>
                   <dd class="Result__url">${result.url}</dd>

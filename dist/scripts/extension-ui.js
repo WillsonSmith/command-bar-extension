@@ -24,6 +24,27 @@ var t,i;const s=globalThis.trustedTypes,e=s?s.createPolicy("lit-html",{createHTM
  * SPDX-License-Identifier: BSD-3-Clause
  */var l,o,r;class n extends n$2{constructor(){super(...arguments),this.renderOptions={host:this},this._$Dt=void 0;}createRenderRoot(){var t,e;const i=super.createRenderRoot();return null!==(t=(e=this.renderOptions).renderBefore)&&void 0!==t||(e.renderBefore=i.firstChild),i}update(t){const i=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Dt=A(i,this.renderRoot,this.renderOptions);}connectedCallback(){var t;super.connectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!0);}disconnectedCallback(){var t;super.disconnectedCallback(),null===(t=this._$Dt)||void 0===t||t.setConnected(!1);}render(){return T}}n.finalized=!0,n._$litElement$=!0,null===(l=globalThis.litElementHydrateSupport)||void 0===l||l.call(globalThis,{LitElement:n}),null===(o=globalThis.litElementPlatformSupport)||void 0===o||o.call(globalThis,{LitElement:n});(null!==(r=globalThis.litElementVersions)&&void 0!==r?r:globalThis.litElementVersions=[]).push("3.0.0-rc.4");
 
+const options = [
+  {
+    name: 'DuckDuckGo',
+    url: 'https://duckduckgo.com',
+    params: ['q'],
+    label: 'Search DuckDuckGo for {query}',
+  },
+  {
+    name: 'Google',
+    url: 'https://google.com/search',
+    params: ['q'], // use to validate? "Missing Param Q"
+    label: 'Google search for {query}',
+  },
+  {
+    name: 'Download Video',
+    url: 'https://materialistic-brook-king.glitch.me/dl',
+    params: [{ name: 'url', autoFill: () => window.location.href }],
+    label: 'Download video from {query}',
+  },
+];
+
 class ExtensionUi extends n {
   static get styles() {
     return r$3`
@@ -74,7 +95,7 @@ class ExtensionUi extends n {
 
   render() {
     if (!this.active) return;
-    return y` <command-bar></command-bar> `;
+    return y` <command-bar .options=${options}></command-bar> `;
   }
 }
 

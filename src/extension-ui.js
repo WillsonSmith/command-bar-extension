@@ -1,5 +1,26 @@
 import { html, css, LitElement } from 'lit';
 
+const options = [
+  {
+    name: 'DuckDuckGo',
+    url: 'https://duckduckgo.com',
+    params: ['q'],
+    label: 'Search DuckDuckGo for {query}',
+  },
+  {
+    name: 'Google',
+    url: 'https://google.com/search',
+    params: ['q'], // use to validate? "Missing Param Q"
+    label: 'Google search for {query}',
+  },
+  {
+    name: 'Download Video',
+    url: 'https://materialistic-brook-king.glitch.me/dl',
+    params: [{ name: 'url', autoFill: () => window.location.href }],
+    label: 'Download video from {query}',
+  },
+];
+
 export class ExtensionUi extends LitElement {
   static get styles() {
     return css`
@@ -50,7 +71,7 @@ export class ExtensionUi extends LitElement {
 
   render() {
     if (!this.active) return;
-    return html` <command-bar></command-bar> `;
+    return html` <command-bar .options=${options}></command-bar> `;
   }
 }
 
